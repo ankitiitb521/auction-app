@@ -1,5 +1,6 @@
 package com.ankit.bidding.controllers;
 
+import com.ankit.bidding.constants.MessageConstant;
 import com.ankit.bidding.dto.RegistrationDto;
 import com.ankit.bidding.execption.BusinessValidationException;
 import com.ankit.bidding.models.UserInfo;
@@ -26,7 +27,7 @@ public class UserController {
         } catch (BusinessValidationException e){
             return Response.status(500).entity(e.getMessage()).build();
         } catch (Exception e){
-            return null;
+            return Response.status(500).entity(MessageConstant.SERVER_ERROR).build();
         }
     }
 
@@ -35,13 +36,26 @@ public class UserController {
         try {
             return Response.status(201).entity(userService.getUserById(id)).build();
         } catch (Exception e){
-            return null;
+            return Response.status(500).entity(MessageConstant.SERVER_ERROR).build();
         }
     }
 
     @GetMapping(value ="vendor/{id}")
-    public Optional<Vendor> getVendor(@PathVariable String id){
-        return userService.getVendorByUserId(id);
+    public Response getVendor(@PathVariable String id){
+        try {
+            return Response.status(200).entity(userService.getVendorByUserId(id)).build();
+        } catch (Exception e){
+            return Response.status(500).entity(MessageConstant.SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping(value ="bidder/{id}")
+    public Response getBidder(@PathVariable String id){
+        try {
+            return Response.status(200).entity(userService.getBidderByUserId(id)).build();
+        } catch (Exception e){
+            return Response.status(500).entity(MessageConstant.SERVER_ERROR).build();
+        }
     }
 
     @GetMapping(value = "/vendors")
@@ -50,7 +64,7 @@ public class UserController {
             return Response.status(201).entity(userService.getAllVendors()).build();
         }
         catch (Exception e){
-            return  null;
+            return Response.status(500).entity(MessageConstant.SERVER_ERROR).build();
         }
     }
 
@@ -60,7 +74,7 @@ public class UserController {
             return Response.status(201).entity(userService.getAllBidders()).build();
         }
         catch (Exception e){
-            return  null;
+            return Response.status(500).entity(MessageConstant.SERVER_ERROR).build();
         }
     }
 }

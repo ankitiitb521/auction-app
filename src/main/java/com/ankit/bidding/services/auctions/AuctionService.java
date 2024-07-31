@@ -2,6 +2,7 @@ package com.ankit.bidding.services.auctions;
 
 import com.ankit.bidding.dto.AuctionDto;
 import com.ankit.bidding.execption.BusinessValidationException;
+import com.ankit.bidding.execption.EntityNotFoundException;
 import com.ankit.bidding.execption.SystemFailureExeption;
 import com.ankit.bidding.models.Auction;
 import com.ankit.bidding.models.Category;
@@ -40,18 +41,16 @@ public class AuctionService {
     public Auction createAuction(AuctionDto auctionDto) throws BusinessValidationException, SystemFailureExeption {
 
         try {
-            // Validate the request DTO
             AuctionValidator.validate(auctionDto);
 
-            // Fetch the related entities
             Slot slot = slotRepository.findById(auctionDto.getSlotId())
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid slot ID"));
+                    .orElseThrow(() -> new EntityNotFoundException("Slot not found with ID: " + auctionDto.getSlotId()));
 
             Category category = categoryRepository.findById(auctionDto.getCategoryId())
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid category ID"));
+                    .orElseThrow(() -> new EntityNotFoundException("Category not found with ID: " + auctionDto.getCategoryId()));
 
             Vendor vendor = vendorRepository.findById(auctionDto.getVendorId())
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid vendor ID"));
+                    .orElseThrow(() ->  new EntityNotFoundException("Slot not found with ID: " + auctionDto.getSlotId()));
 
             // Create and populate the Auction entity
             Auction auction = new Auction();

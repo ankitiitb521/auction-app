@@ -1,5 +1,6 @@
 package com.ankit.bidding.controllers;
 
+import com.ankit.bidding.constants.MessageConstant;
 import com.ankit.bidding.dto.SlotDto;
 import com.ankit.bidding.execption.BusinessValidationException;
 import com.ankit.bidding.services.slots.SlotService;
@@ -22,7 +23,7 @@ public class SlotController {
         } catch (BusinessValidationException e){
             return Response.status(500).entity(e.getMessage()).build();
         } catch (Exception e){
-            return null;
+            return Response.status(500).entity(MessageConstant.SERVER_ERROR).build();
         }
     }
 
@@ -32,7 +33,7 @@ public class SlotController {
             return Response.status(201).entity(slotService.showSlots()).build();
         }
         catch (Exception e){
-            return  null;
+            return Response.status(500).entity(MessageConstant.SERVER_ERROR).build();
         }
     }
 }

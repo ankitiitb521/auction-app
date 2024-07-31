@@ -1,5 +1,6 @@
 package com.ankit.bidding.controllers;
 
+import com.ankit.bidding.constants.MessageConstant;
 import com.ankit.bidding.dto.CategoryDto;
 import com.ankit.bidding.dto.SlotDto;
 import com.ankit.bidding.execption.BusinessValidationException;
@@ -25,7 +26,7 @@ public class CategoryController {
         } catch (BusinessValidationException e){
             return Response.status(500).entity(e.getMessage()).build();
         } catch (Exception e){
-            return null;
+            return Response.status(500).entity(MessageConstant.SERVER_ERROR).build();
         }
     }
 
@@ -35,7 +36,7 @@ public class CategoryController {
             return Response.status(200).entity(categoryService.showCategories()).build();
         }
         catch (Exception e){
-            return  null;
+            return Response.status(500).entity(MessageConstant.SERVER_ERROR).build();
         }
     }
 }

@@ -29,14 +29,12 @@ public class BidInfoService {
     private BidderRepository bidderRepository;
 
     public BidInfo addBid(BidRequest bidRequest) {
-        // Validate auction
         Optional<Auction> optionalAuction = auctionRepository.findById(bidRequest.getAuctionId());
         if (optionalAuction.isEmpty()) {
             throw new EntityNotFoundException("Auction not found with ID: " + bidRequest.getAuctionId());
         }
         Auction auction = optionalAuction.get();
 
-        // Validate bidder
         Optional<Bidder> optionalBidder = bidderRepository.findById(bidRequest.getBidderId());
         if (optionalBidder.isEmpty()) {
             throw new EntityNotFoundException("Bidder not found with ID: " + bidRequest.getBidderId());

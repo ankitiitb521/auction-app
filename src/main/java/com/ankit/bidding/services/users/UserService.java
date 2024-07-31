@@ -48,7 +48,6 @@ public class UserService {
                 Vendor vendor = new Vendor();
                 vendor.setBusinessName(registrationDto.getBusinessName());
                 vendor.setUserInfo(userInfo);
-                logger.info(vendor.toString());
                 vendorRepository.save(vendor);
             }
             else {
@@ -66,12 +65,31 @@ public class UserService {
         }
     }
 
-    public Optional<UserInfo> getUserById(String userId){
-        return userRepository.findById(userId);
+    public Optional<UserInfo> getUserById(String userId) throws SystemFailureExeption {
+        try {
+            return userRepository.findById(userId);
+        } catch (Exception e){
+            logger.error(e.getMessage());
+            throw new SystemFailureExeption(e.getMessage());
+        }
     }
 
-    public Optional<Vendor> getVendorByUserId(String userId){
-        return Optional.ofNullable(vendorRepository.findByUserInfoId(userId));
+    public Optional<Vendor> getVendorByUserId(String userId) throws SystemFailureExeption {
+        try {
+            return Optional.ofNullable(vendorRepository.findByUserInfoId(userId));
+        } catch (Exception e){
+            logger.error(e.getMessage());
+            throw new SystemFailureExeption(e.getMessage());
+        }
+    }
+
+    public Optional<Bidder> getBidderByUserId(String userId) throws SystemFailureExeption {
+        try {
+            return Optional.ofNullable(bidderRepository.findByUserInfoId(userId));
+        } catch (Exception e){
+            logger.error(e.getMessage());
+            throw new SystemFailureExeption(e.getMessage());
+        }
     }
 
     public List<Vendor> getAllVendors() throws SystemFailureExeption {
