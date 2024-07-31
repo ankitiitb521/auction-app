@@ -1,5 +1,5 @@
 package com.ankit.bidding.models;
-import com.ankit.bidding.services.enums.Roles;
+import com.ankit.bidding.enums.Roles;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class AuctionService {
@@ -62,7 +64,7 @@ public class AuctionService {
 
             // Save and return the Auction entity
             return auctionRepository.save(auction);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException  | EntityNotFoundException e){
             logger.error(e.getMessage());
             throw  new BusinessValidationException(e.getMessage());
         } catch (Exception e){
@@ -74,6 +76,17 @@ public class AuctionService {
     public List<Auction> showAuctions() throws SystemFailureExeption {
         try {
             return auctionRepository.findAuctionsByCurrentTime(LocalDateTime.now());
+//            Map<Long,List<Auction>> list = auctionRepository.findAuctionsByCurrentTime(LocalDateTime.now()).stream().collect(Collectors.groupingBy(auction -> auction.getCategory().getId()))
+        } catch (Exception e){
+            logger.error(e.getMessage());
+            throw new SystemFailureExeption(e.getMessage());
+        }
+    }
+
+    public List<Auction> auctionHistory(Long vendorId) throws SystemFailureExeption {
+        try {
+            System.out.println(vendorId);
+            return auctionRepository.findByVendorId(vendorId);
         } catch (Exception e){
             logger.error(e.getMessage());
             throw new SystemFailureExeption(e.getMessage());

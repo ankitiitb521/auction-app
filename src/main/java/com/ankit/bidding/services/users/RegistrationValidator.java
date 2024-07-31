@@ -2,7 +2,7 @@ package com.ankit.bidding.services.users;
 
 import com.ankit.bidding.dto.RegistrationDto;
 import com.ankit.bidding.models.UserInfo;
-import com.ankit.bidding.services.enums.Roles;
+import com.ankit.bidding.enums.Roles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

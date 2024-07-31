@@ -3,14 +3,14 @@ package com.ankit.bidding.services.users;
 import com.ankit.bidding.dto.RegistrationDto;
 import com.ankit.bidding.execption.BusinessValidationException;
 import com.ankit.bidding.execption.SystemFailureExeption;
+import com.ankit.bidding.factory.AppUser;
 import com.ankit.bidding.models.Bidder;
-import com.ankit.bidding.models.Category;
 import com.ankit.bidding.models.UserInfo;
 import com.ankit.bidding.models.Vendor;
 import com.ankit.bidding.repository.BidderRepository;
 import com.ankit.bidding.repository.UserRepository;
 import com.ankit.bidding.repository.VendorRepository;
-import com.ankit.bidding.services.enums.Roles;
+import com.ankit.bidding.enums.Roles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +39,7 @@ public class UserService {
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Transactional
-    public void registerUser(RegistrationDto registrationDto) throws BusinessValidationException, SystemFailureExeption {
+    public AppUser registerUser(RegistrationDto registrationDto) throws BusinessValidationException, SystemFailureExeption {
         try {
             UserInfo userInfo = RegistrationValidator.validate(registrationDto);
             userInfo.setPassword(passwordEncoder.encode(userInfo.getPassword()));
@@ -48,13 +47,13 @@ public class UserService {
                 Vendor vendor = new Vendor();
                 vendor.setBusinessName(registrationDto.getBusinessName());
                 vendor.setUserInfo(userInfo);
-                vendorRepository.save(vendor);
+                return vendorRepository.save(vendor);
             }
             else {
                 Bidder bidder = new Bidder();
                 bidder.setNotificationType(registrationDto.getNotificationType());
                 bidder.setUserInfo(userInfo);
-                bidderRepository.save(bidder);
+                return bidderRepository.save(bidder);
             }
         } catch (IllegalArgumentException e){
             logger.error(e.getMessage());

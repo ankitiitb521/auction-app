@@ -1,37 +1,50 @@
 package com.ankit.bidding.controllers;
 
+import com.ankit.bidding.constants.MessageConstant;
 import com.ankit.bidding.dto.AuctionDto;
-import com.ankit.bidding.models.Auction;
-import com.ankit.bidding.repository.AuctionRepository;
+import com.ankit.bidding.execption.BusinessValidationException;
 import com.ankit.bidding.services.auctions.AuctionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import javax.ws.rs.core.Response;
 
 @RestController
-@RequestMapping("/auctions")
+@RequestMapping("/auctions/")
 public class AuctionController {
 
     @Autowired
     private AuctionService auctionService;
 
     @PostMapping(value="/")
-    public Auction addAuction(@RequestBody AuctionDto auctionDto) {
+    public Response createAuction(@RequestBody AuctionDto auctionDto) {
         try {
-            return auctionService.createAuction(auctionDto);
+            return Response.status(201).entity(auctionService.createAuction(auctionDto)).build();
+        } catch (BusinessValidationException e){
+            return Response.status(400).entity(e.getMessage()).build();
         } catch (Exception e){
-            return null;
+            return Response.status(500).entity(MessageConstant.SERVER_ERROR).build();
         }
     }
 
-    @GetMapping(value = "/")
-    public List<Auction> getAllAuction(){
+    @GetMapping(value = "/all")
+    public Response showAuctions(){
         try {
-            return auctionService.showAuctions();
-        } catch (Exception e){
-            return null;
+            return Response.status(200).entity(auctionService.showAuctions()).build();
+        }
+        catch (Exception e){
+            return Response.status(500).entity(MessageConstant.SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping(value = "/vendors/{vendorId}")
+    public Response getAuctionHistory(@PathVariable Long vendorId){
+        try {
+            System.out.println(vendorId);
+            return Response.status(200).entity(auctionService.auctionHistory(vendorId)).build();
+        }
+        catch (Exception e){
+            return Response.status(500).entity(MessageConstant.SERVER_ERROR).build();
         }
     }
 

@@ -1,12 +1,14 @@
 package com.ankit.bidding.models;
 
+import com.ankit.bidding.factory.AppUser;
+
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Vendor implements Serializable {
+public class Vendor implements AppUser,Serializable {
 
     @Serial
     private static final long serialVersionUID = -7701472919551240346L;

@@ -21,7 +21,7 @@ public class SlotController {
         try {
             return Response.status(201).entity(slotService.addSlot(slotDto)).build();
         } catch (BusinessValidationException e){
-            return Response.status(500).entity(e.getMessage()).build();
+            return Response.status(400).entity(e.getMessage()).build();
         } catch (Exception e){
             return Response.status(500).entity(MessageConstant.SERVER_ERROR).build();
         }
@@ -30,7 +30,7 @@ public class SlotController {
     @GetMapping(value = "/")
     public Response getSlots(){
         try {
-            return Response.status(201).entity(slotService.showSlots()).build();
+            return Response.status(200).entity(slotService.showSlots()).build();
         }
         catch (Exception e){
             return Response.status(500).entity(MessageConstant.SERVER_ERROR).build();

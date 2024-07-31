@@ -3,16 +3,18 @@ package com.ankit.bidding.services.bidinfos;
 import com.ankit.bidding.dto.BidRequest;
 import com.ankit.bidding.execption.EntityNotFoundException;
 import com.ankit.bidding.execption.InvalidBidException;
+import com.ankit.bidding.execption.SystemFailureExeption;
 import com.ankit.bidding.models.Auction;
 import com.ankit.bidding.models.BidInfo;
 import com.ankit.bidding.models.Bidder;
 import com.ankit.bidding.repository.AuctionRepository;
 import com.ankit.bidding.repository.BidInfoRepository;
 import com.ankit.bidding.repository.BidderRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +29,8 @@ public class BidInfoService {
 
     @Autowired
     private BidderRepository bidderRepository;
+
+    private final Logger logger = LoggerFactory.getLogger(BidInfoService.class);
 
     public BidInfo addBid(BidRequest bidRequest) {
         Optional<Auction> optionalAuction = auctionRepository.findById(bidRequest.getAuctionId());
@@ -64,6 +68,16 @@ public class BidInfoService {
 
     public List<BidInfo> showAll(){
         return bidInfoRepository.findAll();
+    }
+
+    public List<BidInfo> bidHistoryByBidderId(Long bidderId) throws SystemFailureExeption {
+        try {
+            System.out.println(bidderId);
+            return bidInfoRepository.findByBidderId(bidderId);
+        } catch (Exception e){
+            logger.error(e.getMessage());
+            throw new SystemFailureExeption(e.getMessage());
+        }
     }
 
 }

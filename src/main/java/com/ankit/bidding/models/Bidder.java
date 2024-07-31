@@ -1,9 +1,11 @@
 package com.ankit.bidding.models;
 
+import com.ankit.bidding.factory.AppUser;
+
 import javax.persistence.*;
 import java.io.Serializable;
 @Entity
-public class Bidder implements Serializable{
+public class Bidder implements Serializable, AppUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

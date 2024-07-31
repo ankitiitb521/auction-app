@@ -30,14 +30,14 @@ public class CategoryService {
         }
     }
 
-    public void addCategory(CategoryDto categoryDto) throws Exception {
+    public Category addCategory(CategoryDto categoryDto) throws Exception {
         try {
             if(categoryDto.getName().isEmpty()){
                 throw new IllegalArgumentException("Category name must not be empty");
             }
             Category category = new Category();
             category.setName(categoryDto.getName());
-            saveCategory(category);
+            return saveCategory(category);
         } catch (IllegalArgumentException e){
             logger.error(e.getMessage());
             throw  new BusinessValidationException(e.getMessage());
@@ -48,7 +48,7 @@ public class CategoryService {
     }
 
     @Transactional
-    private void saveCategory(Category category){
-        categoryRepository.save(category);
+    private Category saveCategory(Category category){
+        return categoryRepository.save(category);
     }
 }

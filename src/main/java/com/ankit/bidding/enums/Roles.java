@@ -1,4 +1,4 @@
-package com.ankit.bidding.services.enums;
+package com.ankit.bidding.enums;
 
 public enum Roles {
     BIDDER,

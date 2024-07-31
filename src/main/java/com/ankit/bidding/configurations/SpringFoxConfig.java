@@ -1,4 +1,4 @@
-package com.ankit.bidding;
+package com.ankit.bidding.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ public class SpringFoxConfig {
     @Bean
     public Docket api(){
         return new Docket(DocumentationType.SWAGGER_2).select()
-        .apis(RequestHandlerSelectors.any())
+        .apis(RequestHandlerSelectors.basePackage("com.ankit.bidding"))
                 .paths(PathSelectors.any()).build();
     }
 }

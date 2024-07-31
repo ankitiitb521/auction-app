@@ -21,10 +21,9 @@ public class CategoryController {
     @PostMapping(value="/")
     public Response addCategory(@RequestBody CategoryDto categoryDto) {
         try {
-            categoryService.addCategory(categoryDto);
-            return Response.status(201).entity("successfully created").build();
+            return Response.status(201).entity(categoryService.addCategory(categoryDto)).build();
         } catch (BusinessValidationException e){
-            return Response.status(500).entity(e.getMessage()).build();
+            return Response.status(400).entity(e.getMessage()).build();
         } catch (Exception e){
             return Response.status(500).entity(MessageConstant.SERVER_ERROR).build();
         }

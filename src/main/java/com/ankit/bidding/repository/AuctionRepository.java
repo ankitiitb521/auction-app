@@ -17,4 +17,8 @@ public interface AuctionRepository extends JpaRepository<Auction,Long> {
     List<Auction> findAuctionsByCurrentTime(@Param("currentTime") LocalDateTime currentTime);
 
     List<Auction> findBySlot(Slot slot);
+
+    @Query("SELECT a FROM Auction a WHERE a.vendor.id = :vendorId")
+    List<Auction> findByVendorId(@Param("vendorId") Long vendorId);
+
 }
